@@ -45,4 +45,11 @@ class Trajectory(object):
             i += 1
         return trajs
 
+    def sub(self, i1, i2):
+        traj = Trajectory()
+        for i in range(i1, i2):
+            traj.append((self.obs[i], self.actions[i], self.rewards[i]))
+        traj.obs.append(self.obs[i2])
+        return traj
+
 

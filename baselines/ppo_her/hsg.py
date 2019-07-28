@@ -1,5 +1,5 @@
 from copy import copy, deepcopy
-
+import random
 
 class HSG(object):
     """ generate hindsight trajectories for input trajectories, based on the strategy update the desired goal of
@@ -73,6 +73,22 @@ class HSGSplit(HSG):
             traj.update_rewards(self.compute_reward)
         return trajs
 
+class HSGRandomSub(HSG):
+    def __init__(self, reward_fn, nsub=2, *args, **kwargs):
+        HSG.__init__(self, reward_fn, *args, **kwargs)
+        self.multiplier = 1
+        self.k = nsub
+
+    def _get(self, trajectory):
+        trajs = []
+        for k in range(self.k):
+            i1, i2 = random.sample(range(len(trajectory)), 2)
+            if i2 < i1:
+                i1_temp = i1
+                i1 = i2
+                i2 = i1_temp
+            trajs.append(trajectory.sub(i1, i2))
+        return trajs
 
 def get_hsg(strategy='none', reward_fn=None):
     assert callable(reward_fn)
@@ -86,6 +102,8 @@ def get_hsg(strategy='none', reward_fn=None):
         return HSGRandom(reward_fn)
     elif 'split' in strategy:
         return HSGSplit(reward_fn, int(copy(strategy).replace('split', '')))
+    elif 'randomsub' in strategy:
+        return HSGRandomSub(reward_fn, int(copy(strategy).replace('randomsub', '')))
     else:
         raise ValueError('unknwon reward function')
 
