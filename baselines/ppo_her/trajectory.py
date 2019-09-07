@@ -28,7 +28,7 @@ class Trajectory(object):
         assert callable(compute_reward)
         for t in range(len(self)):
             action, obs = self.actions[t], self.obs[t+1]
-            self.rewards[t] = compute_reward(obs['achieved_goal'], obs['desired_goal'], {'action': action})[0]
+            self.rewards[t] = compute_reward(obs['achieved_goal'], obs['desired_goal'], {'action': action})
 
     def split(self, k):
         T = len(self)//k
