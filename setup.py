@@ -47,7 +47,7 @@ setup(name='baselines',
       author='OpenAI',
       url='https://github.com/openai/baselines',
       author_email='gym@openai.com',
-      version='0.1.5')
+      version='0.1.5-ppoher')
 
 
 # ensure there is some tensorflow build with version above 1.4
